@@ -1,0 +1,33 @@
+[package]
+name = "hydroaj-core"
+version = "0.1.1"
+edition = "2021"
+authors = ["Ajay Bhattarai <ajaybhattarai360@gmail.com>"]
+description = "High-performance Rust computational engine for water resources engineering by Ajay Bhattarai"
+license = "MIT"
+repository = "https://github.com/ajaybhattarai-123/hydroaj"
+homepage = "https://ajaybhattarai-123.github.io/Personal-website/"
+exclude = [
+    "target/**",
+    "*.docx",
+    "*.pdf",
+    "catalog/**",
+    "tests/**",
+    "benches/**",
+]
+
+[lib]
+name = "_hydroaj_core"
+crate-type = ["cdylib"]
+
+[dependencies]
+pyo3 = { version = "0.20", features = ["extension-module"] }
+numpy = "0.20"
+rayon = "1.8"
+ndarray = "0.15"
+
+[profile.release]
+opt-level = 3
+lto = "fat"
+codegen-units = 1
+panic = "abort"

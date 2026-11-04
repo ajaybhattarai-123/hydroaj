@@ -1,0 +1,84 @@
+[build-system]
+requires = ["maturin>=1.5,<2.0"]
+build-backend = "maturin"
+
+[project]
+name = "hydroaj"
+version = "0.1.1"
+description = "High-performance Water Resources Engineering Computational Framework by Ajay Bhattarai, Civil Engineer"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [
+    { name = "Ajay Bhattarai", email = "ajaybhattarai360@gmail.com" }
+]
+maintainers = [
+    { name = "Ajay Bhattarai", email = "ajaybhattarai360@gmail.com" }
+]
+keywords = [
+    "hydroaj",
+    "water-resources",
+    "hydraulics",
+    "hydrology",
+    "civil-engineering",
+    "groundwater",
+    "open-channel",
+    "pipe-flow",
+    "structures",
+    "rust",
+    "arrow",
+    "polars",
+    "numpy",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "Intended Audience :: Manufacturing",
+    "Topic :: Scientific/Engineering :: Hydrology",
+    "Topic :: Scientific/Engineering :: Physics",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Rust",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: POSIX :: Linux",
+    "Operating System :: MacOS",
+    "Typing :: Typed",
+]
+dependencies = [
+    "numpy>=1.24.0",
+    "pyarrow>=14.0.0",
+    "polars>=0.20.0",
+]
+
+[project.urls]
+Homepage = "https://ajaybhattarai-123.github.io/Personal-website/"
+Documentation = "https://ajaybhattarai-123.github.io/Personal-website/"
+Repository = "https://github.com/ajaybhattarai-123/hydroaj"
+Issues = "https://github.com/ajaybhattarai-123/hydroaj/issues"
+LinkedIn = "https://www.linkedin.com/in/ajaybhattarai360/"
+
+[tool.maturin]
+features = ["pyo3/extension-module"]
+module-name = "hydroaj._hydroaj_core"
+python-source = "python"
+include = [
+    "LICENSE",
+    "README.md",
+    "python/hydroaj/py.typed",
+]
+exclude = [
+    "target/**",
+    "catalog/**",
+    "tests/**",
+    "benches/**",
+    ".cargo/**",
+    "*.bat",
+    "*.docx",
+    "*.pdf",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
