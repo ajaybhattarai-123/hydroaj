@@ -3,7 +3,7 @@ HydroAj: High-Performance Water Resources Engineering Framework by Ajay Bhattara
 Hybrid Rust + Python computational library.
 """
 
-__version__ = "0.1.1"
+__version__ = "0.1.0"
 __author__ = "Ajay Bhattarai (Civil Engineer, B.E. Civil Engineering)"
 __email__ = "ajaybhattarai360@gmail.com"
 __website__ = "https://ajaybhattarai-123.github.io/Personal-website/"

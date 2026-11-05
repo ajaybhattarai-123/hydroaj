@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="https://raw.githubusercontent.com/ajaybhattarai-123/hydroaj/main/assets/logo_banner.svg" alt="HydroAj Logo" width="680">
+</p>
+
 # HydroAj
 
 **High-Performance Water Resources Engineering Computational Framework**  
@@ -162,7 +166,7 @@ If you use HydroAj in research papers, master's/doctoral theses, or engineering 
   title        = {{HydroAj: High-Performance Water Resources Engineering Computational Framework}},
   year         = {2026},
   publisher    = {GitHub},
-  version      = {0.1.1},
+  version      = {0.1.0},
   url          = {https://github.com/ajaybhattarai-123/hydroaj},
   note         = {Open-source hybrid Rust-Python library. Available on PyPI: https://pypi.org/project/hydroaj/}
 }
