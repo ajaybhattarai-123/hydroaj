@@ -579,6 +579,7 @@ print("HydroAj successfully running in Google Colab! Version:", hy.__version__)<
           <tr><td><strong>HydroAj Rust SIMD Engine</strong></td><td><strong>0.019 s</strong></td><td><strong>52,631,000 rows/s</strong></td><td><strong>97.0x Speedup</strong></td></tr>
         </tbody>
       </table>
+      </div> <!-- End #introGuidesWrap -->
 
       <!-- COMPLETE FORMULA CATALOG (ALL 415 FUNCTIONS) -->
       <!-- ==================== DOMAIN: HYDRAULICS ==================== -->
@@ -21008,6 +21009,7 @@ print(f"Meyer-Peter Müller Bedload Transport q_b: {q_b:.5f} m²/s")</code></pre
       </section>
 
       <!-- ERRATA & CONTACT POLICY -->
+      <div id="governanceWrap">
       <h2 class="section-heading" id="errata">Community Contributions & Errata Policy</h2>
       <div class="admonition">
         <div class="admonition-title">Official Notice on Corrections & Inquiries</div>
@@ -21043,6 +21045,7 @@ print(f"Meyer-Peter Müller Bedload Transport q_b: {q_b:.5f} m²/s")</code></pre
   note         = {Open-source hybrid Rust-Python library. Available on PyPI: https://pypi.org/project/hydroaj/}
 }</code></pre>
       </div>
+      </div> <!-- End #governanceWrap -->
 
     </main>
 
@@ -21110,16 +21113,24 @@ print(f"Meyer-Peter Müller Bedload Transport q_b: {q_b:.5f} m²/s")</code></pre
     const clearBtn = document.getElementById('clearSearchBtn');
     const searchStatus = document.getElementById('searchStatus');
     const introGuides = document.getElementById('introGuidesWrap');
+    const governanceWrap = document.getElementById('governanceWrap');
     const domainSections = document.querySelectorAll('.domain-section');
     const formulaCards = document.querySelectorAll('.formula-card');
     const exampleBoxes = document.querySelectorAll('.example-box');
 
+    function escapeHtml(str) {
+      return str.replace(/[&<>"']/g, function(m) {
+        return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m];
+      });
+    }
+
     function executeSearch(query) {
-      const q = query.toLowerCase().trim();
+      const q = (query || '').toLowerCase().trim();
       
       if (!q) {
-        // Reset to full standard view
+        // Reset to full standard reference view
         if (introGuides) introGuides.style.display = 'block';
+        if (governanceWrap) governanceWrap.style.display = 'block';
         searchStatus.style.display = 'none';
         clearBtn.style.display = 'none';
         formulaCards.forEach(c => c.style.display = 'block');
@@ -21128,18 +21139,27 @@ print(f"Meyer-Peter Müller Bedload Transport q_b: {q_b:.5f} m²/s")</code></pre
         return;
       }
 
-      // Hide intro guides so matching cards move directly beneath search box
+      // Hide introductory walkthroughs and governance sections during active search
+      // Matching formula cards immediately elevate directly below the search box
       if (introGuides) introGuides.style.display = 'none';
+      if (governanceWrap) governanceWrap.style.display = 'none';
       clearBtn.style.display = 'block';
       exampleBoxes.forEach(b => b.style.display = 'none');
 
+      // Tokenize multi-word search queries (e.g., 'manning velocity' or 'darcy friction')
+      const tokens = q.split(/\s+/).filter(Boolean);
       let totalMatches = 0;
       const matchesPerDomain = {};
 
       formulaCards.forEach(card => {
-        const name = (card.getAttribute('data-name') || '').toLowerCase();
-        const text = card.textContent.toLowerCase();
-        const isMatch = name.includes(q) || text.includes(q);
+        const rawName = (card.getAttribute('data-name') || '').toLowerCase();
+        const spaceName = rawName.replace(/_/g, ' ');
+        const cardText = card.textContent.toLowerCase();
+        
+        // Every token must match either function name, spaced name, or formula details
+        const isMatch = tokens.every(token => 
+          rawName.includes(token) || spaceName.includes(token) || cardText.includes(token)
+        );
         
         if (isMatch) {
           card.style.display = 'block';
@@ -21151,7 +21171,7 @@ print(f"Meyer-Peter Müller Bedload Transport q_b: {q_b:.5f} m²/s")</code></pre
         }
       });
 
-      // Show/hide domain sections based on matching cards
+      // Show only domain sections that have active matches
       domainSections.forEach(sec => {
         const domId = sec.id;
         if (matchesPerDomain[domId] && matchesPerDomain[domId] > 0) {
@@ -21161,12 +21181,12 @@ print(f"Meyer-Peter Müller Bedload Transport q_b: {q_b:.5f} m²/s")</code></pre
         }
       });
 
-      // Update feedback badge
+      // Update feedback badge with exact match count and quick clear action
       searchStatus.style.display = 'block';
       if (totalMatches > 0) {
-        searchStatus.innerHTML = 'Showing <strong>' + totalMatches + '</strong> matching formulas for \'' + query + '\' &bull; <a href="#" onclick="resetSearch(); return false;" style="color:#1f4e79; text-decoration:underline;">Clear Search</a>';
+        searchStatus.innerHTML = 'Showing <strong>' + totalMatches + '</strong> matching formula' + (totalMatches === 1 ? '' : 's') + ' for \'<strong>' + escapeHtml(query) + '</strong>\' &bull; <a href="#" onclick="resetSearch(); return false;" style="color:#1f4e79; text-decoration:underline; font-weight:bold;">Clear Search</a>';
       } else {
-        searchStatus.innerHTML = 'No formulas matched \'' + query + '\'. Try searching for <em>manning, darcy, theis, scs, weir, or shields</em>.';
+        searchStatus.innerHTML = 'No formulas matched \'<strong>' + escapeHtml(query) + '</strong>\'. Try searching for keywords like: <em>manning, darcy, theis, froude, weir, scs, shields, or chezy</em>.';
       }
     }
 
