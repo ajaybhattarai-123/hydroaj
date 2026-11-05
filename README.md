@@ -1,5 +1,7 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/ajaybhattarai-123/hydroaj/main/assets/logo_banner.svg" alt="HydroAj Logo" width="680">
+  <a href="https://github.com/ajaybhattarai-123/hydroaj">
+    <img src="https://raw.githubusercontent.com/ajaybhattarai-123/hydroaj/main/assets/logo_banner.png" alt="HydroAj" width="560">
+  </a>
 </p>
 
 # HydroAj

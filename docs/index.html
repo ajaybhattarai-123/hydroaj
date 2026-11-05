@@ -56,13 +56,20 @@
       position: sticky;
       top: 0;
       z-index: 100;
-      height: 58px;
+      height: 72px;
       background: #ffffff;
-      border-bottom: 1.5px solid #000000;
+      border-bottom: 2px solid #000000;
       display: flex;
       align-items: center;
       padding: 0 2rem;
       justify-content: space-between;
+    }
+    .navbar-brand img {
+      height: 48px;
+      width: 48px;
+      object-fit: contain;
+      vertical-align: middle;
+      margin-right: 0.5rem;
     }
     .navbar-brand {
       display: flex;
@@ -112,8 +119,8 @@
       background: #ffffff;
       border-right: 1px solid var(--border-color);
       position: sticky;
-      top: 58px;
-      height: calc(100vh - 58px);
+      top: 72px;
+      height: calc(100vh - 72px);
       overflow-y: auto;
       padding: 1.5rem 1rem;
     }
@@ -152,8 +159,8 @@
       width: 240px;
       flex-shrink: 0;
       position: sticky;
-      top: 58px;
-      height: calc(100vh - 58px);
+      top: 72px;
+      height: calc(100vh - 72px);
       overflow-y: auto;
       padding: 2rem 1rem;
       background: #ffffff;
@@ -421,8 +428,8 @@
   <nav class="navbar">
     <div style="display: flex; align-items: center; gap: 1rem;">
       <a href="#" class="navbar-brand">
-        <img src="../assets/logo.svg" alt="HydroAj" style="height: 28px; width: 28px; vertical-align: middle;">
-        <span>HydroAj Reference Manual</span>
+        <img src="../assets/logo.png" alt="HydroAj Logo">
+        <span style="font-size: 1.35rem; font-weight: bold; letter-spacing: -0.01em;">HydroAj Reference Manual</span>
         <span class="version-tag">v0.1.0</span>
       </a>
     </div>
@@ -472,6 +479,11 @@
     <!-- Main Content Area -->
     <main class="main-content">
 
+      <!-- Brand Banner -->
+      <div style="text-align: center; margin: 1rem 0 2rem 0;">
+        <img src="../assets/logo_banner.png" alt="HydroAj Logo" style="max-width: 460px; width: 100%; height: auto;">
+      </div>
+
       <h1 id="user-guide">HydroAj: Water Resources Engineering Reference Manual</h1>
       <p class="byline">Designed and Authored by Ajay Bhattarai (Civil Engineer, B.E. Civil Engineering)</p>
 
@@ -487,11 +499,17 @@
         parameter definitions, and standardized SI units.
       </p>
 
-      <!-- Instant Live Search Box -->
+      <!-- Instant Live Search Box with Real-Time Feedback -->
       <div class="search-box-wrap">
-        <input type="text" id="searchInput" class="search-input" placeholder="Search across all 415 formulas, equations, variables, or units (e.g., 'manning', 'darcy', 'theis', 'scs', 'shear')...">
+        <div style="position: relative; display: flex; align-items: center;">
+          <input type="text" id="searchInput" class="search-input" placeholder="Type function name or equation keyword (e.g. 'manning', 'darcy', 'theis', 'rational', 'weir', 'shields')...">
+          <button id="clearSearchBtn" style="position: absolute; right: 14px; background: none; border: none; font-size: 22px; cursor: pointer; display: none; color: #555; padding: 0 4px;" title="Clear search (Esc)">&times;</button>
+        </div>
+        <div id="searchStatus" style="display: none; margin-top: 10px; padding: 6px 12px; background: #f0f7ff; border: 1px solid #b9d8fc; border-left: 4px solid #1f4e79; font-size: 15px; font-weight: bold; color: #0f2b48;"></div>
       </div>
 
+      <!-- Introductory Guides (Auto-hidden during search) -->
+      <div id="introGuidesWrap">
       <!-- Installation Guide -->
       <h2 class="section-heading" id="installation">Installation & Quickstart</h2>
       <p>Install HydroAj directly using <code>pip</code>:</p>
@@ -21087,20 +21105,94 @@ print(f"Meyer-Peter Müller Bedload Transport q_b: {q_b:.5f} m²/s")</code></pre
   </footer>
 
   <script>
-    // Live Search Filter across all 415 functions
+    // Real-Time Instant Search Filter across all 415 functions
     const searchInput = document.getElementById('searchInput');
+    const clearBtn = document.getElementById('clearSearchBtn');
+    const searchStatus = document.getElementById('searchStatus');
+    const introGuides = document.getElementById('introGuidesWrap');
+    const domainSections = document.querySelectorAll('.domain-section');
     const formulaCards = document.querySelectorAll('.formula-card');
+    const exampleBoxes = document.querySelectorAll('.example-box');
 
-    searchInput.addEventListener('input', (e) => {
-      const query = e.target.value.toLowerCase().trim();
+    function executeSearch(query) {
+      const q = query.toLowerCase().trim();
+      
+      if (!q) {
+        // Reset to full standard view
+        if (introGuides) introGuides.style.display = 'block';
+        searchStatus.style.display = 'none';
+        clearBtn.style.display = 'none';
+        formulaCards.forEach(c => c.style.display = 'block');
+        domainSections.forEach(s => s.style.display = 'block');
+        exampleBoxes.forEach(b => b.style.display = 'block');
+        return;
+      }
+
+      // Hide intro guides so matching cards move directly beneath search box
+      if (introGuides) introGuides.style.display = 'none';
+      clearBtn.style.display = 'block';
+      exampleBoxes.forEach(b => b.style.display = 'none');
+
+      let totalMatches = 0;
+      const matchesPerDomain = {};
+
       formulaCards.forEach(card => {
+        const name = (card.getAttribute('data-name') || '').toLowerCase();
         const text = card.textContent.toLowerCase();
-        if (text.includes(query)) {
+        const isMatch = name.includes(q) || text.includes(q);
+        
+        if (isMatch) {
           card.style.display = 'block';
+          totalMatches++;
+          const dom = card.getAttribute('data-domain');
+          matchesPerDomain[dom] = (matchesPerDomain[dom] || 0) + 1;
         } else {
           card.style.display = 'none';
         }
       });
+
+      // Show/hide domain sections based on matching cards
+      domainSections.forEach(sec => {
+        const domId = sec.id;
+        if (matchesPerDomain[domId] && matchesPerDomain[domId] > 0) {
+          sec.style.display = 'block';
+        } else {
+          sec.style.display = 'none';
+        }
+      });
+
+      // Update feedback badge
+      searchStatus.style.display = 'block';
+      if (totalMatches > 0) {
+        searchStatus.innerHTML = 'Showing <strong>' + totalMatches + '</strong> matching formulas for \'' + query + '\' &bull; <a href="#" onclick="resetSearch(); return false;" style="color:#1f4e79; text-decoration:underline;">Clear Search</a>';
+      } else {
+        searchStatus.innerHTML = 'No formulas matched \'' + query + '\'. Try searching for <em>manning, darcy, theis, scs, weir, or shields</em>.';
+      }
+    }
+
+    function resetSearch() {
+      searchInput.value = '';
+      executeSearch('');
+      searchInput.focus();
+    }
+
+    searchInput.addEventListener('input', (e) => {
+      executeSearch(e.target.value);
+    });
+
+    clearBtn.addEventListener('click', () => {
+      resetSearch();
+    });
+
+    // Keyboard navigation: Escape clears search, '/' focuses search
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && searchInput.value) {
+        resetSearch();
+      } else if (e.key === '/' && document.activeElement !== searchInput) {
+        e.preventDefault();
+        searchInput.focus();
+        searchInput.select();
+      }
     });
   </script>
 </body>
