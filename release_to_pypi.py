@@ -34,18 +34,27 @@ def main():
 
     token = ""
 
+    # Check 0: Environment variable
+    env_token = os.environ.get("PYPI_API_TOKEN") or os.environ.get("TWINE_PASSWORD", "")
+    clean_env = "".join(env_token.split()) if env_token else ""
+    if clean_env.startswith("pypi-"):
+        token = clean_env
+        masked = token[:15] + "..." + token[-10:]
+        print(f"\n[FOUND] Detected PyPI token from environment variable: {masked}")
+
     # Check 1: Auto-detect from clipboard
-    clip = get_clipboard_text()
-    # Remove any stray newlines or whitespace
-    clean_clip = "".join(clip.split()) if clip else ""
-    
-    if clean_clip.startswith("pypi-"):
-        print(f"\n[FOUND] Detected PyPI token in your clipboard!")
-        masked = clean_clip[:15] + "..." + clean_clip[-10:]
-        print(f"Token: {masked} ({len(clean_clip)} characters)")
-        ans = input("Use this token from clipboard? (Y/n): ").strip().lower()
-        if ans in ("", "y", "yes"):
-            token = clean_clip
+    if not token:
+        clip = get_clipboard_text()
+        # Remove any stray newlines or whitespace
+        clean_clip = "".join(clip.split()) if clip else ""
+        
+        if clean_clip.startswith("pypi-"):
+            print(f"\n[FOUND] Detected PyPI token in your clipboard!")
+            masked = clean_clip[:15] + "..." + clean_clip[-10:]
+            print(f"Token: {masked} ({len(clean_clip)} characters)")
+            ans = input("Use this token from clipboard? (Y/n): ").strip().lower()
+            if ans in ("", "y", "yes"):
+                token = clean_clip
 
     # Check 2: If not in clipboard or rejected, ask for input with visible feedback
     if not token:
@@ -81,14 +90,21 @@ def main():
 
     print("\n[INFO] Uploading release distributions to PyPI...")
     
+    import glob
+    dist_files = sorted(glob.glob("target/wheels/*.whl")) + sorted(glob.glob("target/wheels/*.tar.gz"))
+    if not dist_files:
+        print("[ERROR] No distribution files found in target/wheels/")
+        sys.exit(1)
+
+    print(f"[INFO] Found {len(dist_files)} distribution files to upload:")
+    for f in dist_files:
+        print(f"  - {os.path.basename(f)}")
+
     env = os.environ.copy()
     env["TWINE_USERNAME"] = "__token__"
     env["TWINE_PASSWORD"] = token
 
-    cmd = [sys.executable, "-m", "twine", "upload", "--verbose"] + repo_args + [
-        "target/wheels/hydroaj-0.1.0-cp311-cp311-win_amd64.whl",
-        "target/wheels/hydroaj-0.1.0.tar.gz"
-    ]
+    cmd = [sys.executable, "-m", "twine", "upload", "--skip-existing", "--verbose"] + repo_args + dist_files
 
     ret = subprocess.call(cmd, env=env)
     if ret == 0:
