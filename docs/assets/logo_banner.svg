@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 180" width="100%" height="100%">
+  <defs>
+    <linearGradient id="dropGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0284c7" />
+      <stop offset="50%" stop-color="#0369a1" />
+      <stop offset="100%" stop-color="#0f2b48" />
+    </linearGradient>
+
+    <linearGradient id="waveGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8" />
+      <stop offset="100%" stop-color="#0284c7" />
+    </linearGradient>
+  </defs>
+
+  <!-- Left Icon Emblem Group (scaled and centered vertically) -->
+  <g transform="translate(40, 15) scale(0.30)">
+    <!-- Droplet Body -->
+    <path d="M 256, 42 
+             C 256, 42 410, 220 410, 330 
+             A 154, 154 0 1, 1 102, 330 
+             C 102, 220 256, 42 256, 42 Z" 
+          fill="url(#dropGrad)" />
+
+    <!-- Wave Streamline -->
+    <path d="M 125, 335 
+             C 175, 275 220, 395 285, 330 
+             C 335, 280 375, 310 395, 345
+             C 380, 420 310, 470 256, 470
+             C 185, 470 135, 410 125, 335 Z" 
+          fill="url(#waveGrad)" 
+          opacity="0.88" />
+
+    <!-- Monogram HA -->
+    <path d="M 185, 205 L 215, 205 L 215, 375 L 185, 375 Z" fill="#ffffff" rx="4" />
+    <path d="M 245, 205 L 275, 205 L 275, 375 L 245, 375 Z" fill="#ffffff" rx="4" />
+    <path d="M 185, 280 L 325, 280 L 325, 305 L 185, 305 Z" fill="#ffffff" rx="3" />
+    <path d="M 270, 205 C 310, 205 335, 230 335, 275 L 335, 375 L 308, 375 L 308, 275 C 308, 245 295, 230 270, 230 Z" fill="#ffffff" />
+    <circle cx="256" cy="118" r="14" fill="#38bdf8" />
+    <circle cx="256" cy="118" r="7" fill="#ffffff" />
+  </g>
+
+  <!-- Clean Brand Name Typography: ONLY 'HydroAj' -->
+  <g transform="translate(205, 35)">
+    <text x="0" y="85" font-family="'Times New Roman', 'Aptos', Georgia, serif" font-size="88" font-weight="bold" fill="#0f2b48" letter-spacing="-0.025em">
+      Hydro<tspan fill="#0284c7">Aj</tspan>
+    </text>
+  </g>
+</svg>

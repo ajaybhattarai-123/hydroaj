@@ -12,11 +12,6 @@
       <stop offset="0%" stop-color="#38bdf8" />
       <stop offset="100%" stop-color="#0284c7" />
     </linearGradient>
-
-    <!-- Soft Drop Shadow -->
-    <filter id="dropShadow" x="-10%" y="-10%" width="125%" height="125%">
-      <feDropShadow dx="0" dy="12" stdDeviation="16" flood-color="#0f2b48" flood-opacity="0.22" />
-    </filter>
   </defs>
 
   <!-- Outer Water Droplet / Shield Silhouette -->
@@ -24,8 +19,7 @@
            C 256, 42 410, 220 410, 330 
            A 154, 154 0 1, 1 102, 330 
            C 102, 220 256, 42 256, 42 Z" 
-        fill="url(#waterGrad)" 
-        filter="url(#dropShadow)" />
+        fill="url(#waterGrad)" />
 
   <!-- Dynamic Hydraulic Wave / Streamline Ribbon (Representing Fluid Dynamics) -->
   <path d="M 125, 335 
