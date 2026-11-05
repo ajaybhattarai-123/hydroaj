@@ -3,7 +3,7 @@
     <linearGradient id="dropGrad" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="#0284c7" />
       <stop offset="50%" stop-color="#0369a1" />
-      <stop offset="100%" stop-color="#0f2b48" />
+      <stop offset="100%" stop-color="#0284c7" />
     </linearGradient>
 
     <linearGradient id="waveGrad" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -12,25 +12,10 @@
     </linearGradient>
   </defs>
 
-  <!-- Left Icon Emblem Group (scaled and centered vertically) -->
+  <!-- Left Icon Emblem Group -->
   <g transform="translate(40, 15) scale(0.30)">
-    <!-- Droplet Body -->
-    <path d="M 256, 42 
-             C 256, 42 410, 220 410, 330 
-             A 154, 154 0 1, 1 102, 330 
-             C 102, 220 256, 42 256, 42 Z" 
-          fill="url(#dropGrad)" />
-
-    <!-- Wave Streamline -->
-    <path d="M 125, 335 
-             C 175, 275 220, 395 285, 330 
-             C 335, 280 375, 310 395, 345
-             C 380, 420 310, 470 256, 470
-             C 185, 470 135, 410 125, 335 Z" 
-          fill="url(#waveGrad)" 
-          opacity="0.88" />
-
-    <!-- Monogram HA -->
+    <path d="M 256, 42 C 256, 42 410, 220 410, 330 A 154, 154 0 1, 1 102, 330 C 102, 220 256, 42 256, 42 Z" fill="url(#dropGrad)" />
+    <path d="M 125, 335 C 175, 275 220, 395 285, 330 C 335, 280 375, 310 395, 345 C 380, 420 310, 470 256, 470 C 185, 470 135, 410 125, 335 Z" fill="url(#waveGrad)" opacity="0.88" />
     <path d="M 185, 205 L 215, 205 L 215, 375 L 185, 375 Z" fill="#ffffff" rx="4" />
     <path d="M 245, 205 L 275, 205 L 275, 375 L 245, 375 Z" fill="#ffffff" rx="4" />
     <path d="M 185, 280 L 325, 280 L 325, 305 L 185, 305 Z" fill="#ffffff" rx="3" />
@@ -39,9 +24,9 @@
     <circle cx="256" cy="118" r="7" fill="#ffffff" />
   </g>
 
-  <!-- Clean Brand Name Typography: ONLY 'HydroAj' -->
+  <!-- Clean Brand Name Typography: 'HydroAj' -->
   <g transform="translate(205, 35)">
-    <text x="0" y="85" font-family="'Times New Roman', 'Aptos', Georgia, serif" font-size="88" font-weight="bold" fill="#0f2b48" letter-spacing="-0.025em">
+    <text x="0" y="85" font-family="'Times New Roman', Times, 'Aptos', Georgia, serif" font-size="88" font-weight="bold" fill="#1f4e79" letter-spacing="-0.025em">
       Hydro<tspan fill="#0284c7">Aj</tspan>
     </text>
   </g>
