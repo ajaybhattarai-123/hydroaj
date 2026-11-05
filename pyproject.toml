@@ -10,10 +10,12 @@ readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "MIT" }
 authors = [
-    { name = "Ajay Bhattarai", email = "ajaybhattarai360@gmail.com" }
+    { name = "Ajay Bhattarai", email = "ajaybhattarai986@gmail.com" },
+    { name = "Ajay Bhattarai", email = "ajaybhattarai360@gmail.com" },
 ]
 maintainers = [
-    { name = "Ajay Bhattarai", email = "ajaybhattarai360@gmail.com" }
+    { name = "Ajay Bhattarai", email = "ajaybhattarai986@gmail.com" },
+    { name = "Ajay Bhattarai", email = "ajaybhattarai360@gmail.com" },
 ]
 keywords = [
     "hydroaj",
