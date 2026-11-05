@@ -42,6 +42,22 @@ def main():
         masked = token[:15] + "..." + token[-10:]
         print(f"\n[FOUND] Detected PyPI token from environment variable: {masked}")
 
+    # Check 0.5: ~/.pypirc
+    pypirc_path = os.path.expanduser("~/.pypirc")
+    if not token and os.path.exists(pypirc_path):
+        import configparser
+        try:
+            cfg = configparser.ConfigParser()
+            cfg.read(pypirc_path)
+            if "pypi" in cfg and "password" in cfg["pypi"]:
+                saved = cfg["pypi"]["password"].strip()
+                if saved.startswith("pypi-"):
+                    token = saved
+                    masked = token[:15] + "..." + token[-10:]
+                    print(f"\n[FOUND] Detected saved PyPI token in ~/.pypirc: {masked}")
+        except Exception:
+            pass
+
     # Check 1: Auto-detect from clipboard
     if not token:
         clip = get_clipboard_text()
@@ -85,6 +101,20 @@ def main():
         else:
             repo_args = []
             print(f"\n[OK] Production PyPI token verified ({len(token)} characters).")
+            # Automatically save production token to ~/.pypirc so user never has to enter it again
+            try:
+                pypirc_path = os.path.expanduser("~/.pypirc")
+                save_needed = True
+                if os.path.exists(pypirc_path):
+                    with open(pypirc_path, "r", encoding="utf-8") as pf:
+                        if token in pf.read():
+                            save_needed = False
+                if save_needed:
+                    with open(pypirc_path, "a", encoding="utf-8") as pf:
+                        pf.write(f"\n[pypi]\nrepository = https://upload.pypi.org/legacy/\nusername = __token__\npassword = {token}\n")
+                    print("[SAVED] Saved token to ~/.pypirc so you will never need to enter it again.")
+            except Exception:
+                pass
     except Exception:
         repo_args = []
 
